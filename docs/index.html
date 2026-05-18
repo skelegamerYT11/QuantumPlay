@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumPlay | The Ultimate Universal Game Launcher</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="hero">
+        <div class="glow-container">
+            <div class="glow glow-1"></div>
+            <div class="glow glow-2"></div>
+        </div>
+        <div class="container">
+            <nav class="nav">
+                <div class="logo-area">
+                    <img src="app_logo.png" alt="QuantumPlay Logo" class="nav-logo">
+                    <span class="logo-text">Quantum<span>Play</span></span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">Architecture</a>
+                    <a href="https://github.com/skelegamerYT11/QuantumPlay/" target="_blank" class="btn-nav-github">
+                        <i data-lucide="github"></i> GitHub
+                    </a>
+                </div>
+            </nav>
+
+            <div class="hero-content">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    <span>Stable Release v1.0.0 is Live</span>
+                </div>
+                <h1>One Launcher.<br>All Your Games.</h1>
+                <p class="subtitle">A premium, lightweight, and ultra-fast universal game library.</p>
+                <p class="description">
+                    Say goodbye to scattered libraries, heavy launch clients, and system lag. 
+                    QuantumPlay gathers all your games from Steam, Epic Games, GOG, Rockstar, and Ubisoft into a single, gorgeous desktop hub.
+                </p>
+                
+                <div class="hero-buttons">
+                    <a href="https://github.com/skelegamerYT11/QuantumPlay/raw/main/dist-release/QuantumPlay%20Setup%201.0.0.exe" class="btn btn-primary">
+                        <i data-lucide="download"></i> Download Setup
+                    </a>
+                    <a href="https://github.com/skelegamerYT11/QuantumPlay/" class="btn btn-secondary" target="_blank">
+                        <i data-lucide="github"></i> View on GitHub
+                    </a>
+                </div>
+
+                <!-- Showcase Mockup -->
+                <div class="showcase-container">
+                    <div class="window-header">
+                        <div class="window-dot red"></div>
+                        <div class="window-dot yellow"></div>
+                        <div class="window-dot green"></div>
+                        <div class="window-title">QuantumPlay - Library</div>
+                    </div>
+                    <img src="https://i.imgur.com/S6KozkX.png" alt="QuantumPlay Application Interface" class="showcase-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Features Grid -->
+        <section id="features" class="section">
+            <div class="section-header">
+                <i data-lucide="sparkles" class="section-icon"></i>
+                <h2>State-Of-The-Art Features</h2>
+                <p class="section-subtitle">Designed for speed, organized for players, and packed with custom theme controls.</p>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="scan"></i>
+                    </div>
+                    <h3>Auto-Launcher Scanning</h3>
+                    <p>Instantly scans and imports your installed game libraries from <strong>Steam, Epic Games, Rockstar Games, GOG Galaxy, and Ubisoft Connect</strong>. Reads play time and last played stats directly from the source.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="folder-git-2"></i>
+                    </div>
+                    <h3>Drag & Drop Categories</h3>
+                    <p>Organize your gaming catalog just like on Steam! Create custom folders in the sidebar and easily drag-and-drop titles into them. Simple right-click menu is available to reset titles back to the main pool.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="palette"></i>
+                    </div>
+                    <h3>Dynamic HSL Theme Customizer</h3>
+                    <p>Tailor the UI to your battlestation. Switch between curated presets like <em>Cyberpunk, Forest, Dark, or Light</em>, or build your own custom theme by adjusting gradient colors, active RGB borders, and text colors.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="activity"></i>
+                    </div>
+                    <h3>Active Game Process Controller</h3>
+                    <p>QuantumPlay monitors your launched games. If a game freezes or you want to exit cleanly, a dedicated **red "Close Game" button** replaces the "Running" state to force-terminate processes instantly.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <h3>Single-Instance Protection</h3>
+                    <p>Never run duplicate processes again. Our advanced IPC system automatically blocks duplicate executable launches, putting your already-running app directly back in focus.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                        <i data-lucide="package-x"></i>
+                    </div>
+                    <h3>Deep Clean Uninstaller</h3>
+                    <p>Privacy-focused design. Easily uninstall the client with a single click, featuring a secure checkbox to permanently delete all local game databases, custom cover paths, and system stats stored in <code>%AppData%</code>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Section -->
+        <section id="how-it-works" class="section technical-section">
+            <div class="glass-box">
+                <div class="tech-grid">
+                    <div class="tech-info">
+                        <div class="tech-badge">Local-First Architecture</div>
+                        <h2>No Clouds, No Telemetry. Just Speed.</h2>
+                        <p>
+                            Unlike traditional launchers that require online logins, collect tracking analytics, and slow down your PC, QuantumPlay operates 100% locally.
+                        </p>
+                        
+                        <div class="tech-bullets">
+                            <div class="bullet-item">
+                                <div class="bullet-icon"><i data-lucide="database"></i></div>
+                                <div>
+                                    <h4>Asynchronous SQLite-Style Storage</h4>
+                                    <p>Your libraries are loaded in milliseconds using a local JSON database stream, which is safe, super lightweight, and uses almost zero RAM.</p>
+                                </div>
+                            </div>
+                            <div class="bullet-item">
+                                <div class="bullet-icon"><i data-lucide="terminal"></i></div>
+                                <div>
+                                    <h4>Pure Windows API Scanning</h4>
+                                    <p>Reads game locations securely from your Windows registry keys and installation files. No heavy client APIs or active memory injections.</p>
+                                </div>
+                            </div>
+                            <div class="bullet-item">
+                                <div class="bullet-icon"><i data-lucide="eye-off"></i></div>
+                                <div>
+                                    <h4>100% Privacy Focused</h4>
+                                    <p>No account required, no login screens, and zero online tracking. Your gaming habits are your own business.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-graphic">
+                        <div class="tech-card">
+                            <span class="tech-tag">TECH STACK</span>
+                            <h3>Developer-Friendly Frameworks</h3>
+                            <ul class="tech-list">
+                                <li><strong>Electron</strong> — Desktop shell wrapper</li>
+                                <li><strong>React 19 & TypeScript</strong> — Solid frontend foundation</li>
+                                <li><strong>Vite</strong> — Fast bundler & compiler</li>
+                                <li><strong>Vanilla CSS3</strong> — Dynamic glassmorphic layout</li>
+                            </ul>
+                            <div class="tech-status">
+                                <span class="status-dot"></span> Core System Optimized
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="section cta-section">
+            <h2>Take Back Control of Your Game Library</h2>
+            <p>QuantumPlay is free, open-source, and ready to play.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/skelegamerYT11/QuantumPlay/raw/main/dist-release/QuantumPlay%20Setup%201.0.0.exe" class="btn btn-primary btn-large">
+                    <i data-lucide="download"></i> Download v1.0.0 (Setup)
+                </a>
+                <a href="https://github.com/skelegamerYT11/QuantumPlay/" class="btn btn-secondary btn-large" target="_blank">
+                    <i data-lucide="github"></i> Fork on GitHub
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container text-center">
+            <p>QuantumPlay &copy; 2026 - Designed & Built by <strong>MrSkele</strong> & <strong>Antigravity</strong>.</p>
+            <p class="credits-sub">⚡ Vibe Coded with extreme performance and premium glassmorphic layout.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
