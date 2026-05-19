@@ -34,6 +34,8 @@ type AppContextType = {
   setCustomAccent: (v: string) => void;
   minimizeToTray: boolean;
   setMinimizeToTray: (v: boolean) => void;
+  sortOrder: string;
+  setSortOrder: (v: string) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -64,6 +66,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [customText, setCustomText] = useState(() => localStorage.getItem('qp_custom_text') || '#f8fafc');
   const [customAccent, setCustomAccent] = useState(() => localStorage.getItem('qp_custom_accent') || '#3b82f6');
   const [minimizeToTray, setMinimizeToTray] = useState(true);
+  const [sortOrder, setSortOrder] = useState<string>(() => localStorage.getItem('qp_sort_order') || 'az');
 
   const isElectron = typeof window !== 'undefined' && !!window.electronAPI;
 
@@ -77,6 +80,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (savedSettings.customText) setCustomText(savedSettings.customText);
         if (savedSettings.customAccent) setCustomAccent(savedSettings.customAccent);
         if (savedSettings.minimizeToTray !== undefined) setMinimizeToTray(savedSettings.minimizeToTray);
+        if (savedSettings.sortOrder) setSortOrder(savedSettings.sortOrder);
       }
     }).catch((err: any) => console.error('Failed to load settings:', err));
   }, [isElectron]);
@@ -131,6 +135,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem('qp_lang', language);
   }, [language]);
+
+  // Persist sortOrder
+  useEffect(() => {
+    localStorage.setItem('qp_sort_order', sortOrder);
+    if (isElectron) {
+      window.electronAPI!.updateSettings({
+        sortOrder
+      }).catch((err: any) => console.error('Failed to save sortOrder:', err));
+    }
+  }, [sortOrder, isElectron]);
 
   // Translation helper
   const t = useCallback((key: string): string => {
@@ -188,7 +202,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       customAccent,
       setCustomAccent,
       minimizeToTray,
-      setMinimizeToTray
+      setMinimizeToTray,
+      sortOrder,
+      setSortOrder
     }}>
       {children}
     </AppContext.Provider>

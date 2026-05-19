@@ -30,6 +30,10 @@ const base = {
   WELCOME: '',
   WELCOME_SUB: '',
   OPEN_LIBRARY: '',
+  SORT_BY: '',
+  SORT_AZ: '',
+  SORT_FAVORITES: '',
+  SORT_CUSTOM: '',
 };
 
 export const translations: Record<string, typeof base> = {
@@ -65,6 +69,10 @@ export const translations: Record<string, typeof base> = {
     WELCOME: 'Welcome to Quantum Play',
     WELCOME_SUB: 'Your personal game library. All your games, one place.',
     OPEN_LIBRARY: 'Open Library',
+    SORT_BY: 'Sort by',
+    SORT_AZ: 'A-Z',
+    SORT_FAVORITES: 'Favorites',
+    SORT_CUSTOM: 'Custom',
   },
   it: {
     LIBRARY: 'LIBRERIA',
@@ -98,6 +106,10 @@ export const translations: Record<string, typeof base> = {
     WELCOME: 'Benvenuto in Quantum Play',
     WELCOME_SUB: 'La tua libreria personale. Tutti i tuoi giochi, in un unico posto.',
     OPEN_LIBRARY: 'Apri la Libreria',
+    SORT_BY: 'Ordina per',
+    SORT_AZ: 'A-Z',
+    SORT_FAVORITES: 'Preferiti',
+    SORT_CUSTOM: 'Personalizzato',
   },
   fr: {
     LIBRARY: 'BIBLIOTHÈQUE',
@@ -131,6 +143,10 @@ export const translations: Record<string, typeof base> = {
     WELCOME: 'Bienvenue dans Quantum Play',
     WELCOME_SUB: 'Votre bibliothèque personnelle. Tous vos jeux, au même endroit.',
     OPEN_LIBRARY: 'Ouvrir la Bibliothèque',
+    SORT_BY: 'Trier par',
+    SORT_AZ: 'A-Z',
+    SORT_FAVORITES: 'Favoris',
+    SORT_CUSTOM: 'Personnalisé',
   },
   de: {
     LIBRARY: 'BIBLIOTHEK',
@@ -164,6 +180,10 @@ export const translations: Record<string, typeof base> = {
     WELCOME: 'Willkommen bei Quantum Play',
     WELCOME_SUB: 'Deine persönliche Spielebibliothek. Alle Spiele, ein Ort.',
     OPEN_LIBRARY: 'Bibliothek öffnen',
+    SORT_BY: 'Sortieren nach',
+    SORT_AZ: 'A-Z',
+    SORT_FAVORITES: 'Favoriten',
+    SORT_CUSTOM: 'Benutzerdefiniert',
   },
   es: {
     LIBRARY: 'BIBLIOTECA',
@@ -197,6 +217,10 @@ export const translations: Record<string, typeof base> = {
     WELCOME: 'Bienvenido a Quantum Play',
     WELCOME_SUB: 'Tu biblioteca personal. Todos tus juegos, en un solo lugar.',
     OPEN_LIBRARY: 'Abrir Biblioteca',
+    SORT_BY: 'Ordenar por',
+    SORT_AZ: 'A-Z',
+    SORT_FAVORITES: 'Favoritos',
+    SORT_CUSTOM: 'Personalizado',
   },
   pt: {
     LIBRARY: 'BIBLIOTECA',
@@ -230,6 +254,10 @@ export const translations: Record<string, typeof base> = {
     WELCOME: 'Bem-vindo ao Quantum Play',
     WELCOME_SUB: 'Sua biblioteca pessoal. Todos os seus jogos, em um lugar.',
     OPEN_LIBRARY: 'Abrir Biblioteca',
+    SORT_BY: 'Ordenar por',
+    SORT_AZ: 'A-Z',
+    SORT_FAVORITES: 'Favoritos',
+    SORT_CUSTOM: 'Personalizado',
   },
 };
 

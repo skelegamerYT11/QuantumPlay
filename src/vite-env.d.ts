@@ -4,6 +4,7 @@ interface ElectronAPI {
   getGames: () => Promise<unknown[]>
   addGame: (game: unknown) => Promise<boolean>
   updateGame: (id: string, updates: unknown) => Promise<boolean>
+  setGamesOrder: (orderedIds: string[]) => Promise<boolean>
   deleteGame: (id: string) => Promise<boolean>
   scanGames: () => Promise<{ total: number; added: number }>
   playGame: (id: string) => Promise<{ ok: boolean; reason?: string }>

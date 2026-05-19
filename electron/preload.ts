@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getGames: () => ipcRenderer.invoke('get-games'),
   addGame: (game: unknown) => ipcRenderer.invoke('add-game', game),
   updateGame: (id: string, updates: unknown) => ipcRenderer.invoke('update-game', id, updates),
+  setGamesOrder: (orderedIds: string[]) => ipcRenderer.invoke('set-games-order', orderedIds),
   deleteGame: (id: string) => ipcRenderer.invoke('delete-game', id),
   scanGames: () => ipcRenderer.invoke('scan-games'),
 

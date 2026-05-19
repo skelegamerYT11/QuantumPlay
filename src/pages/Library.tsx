@@ -18,25 +18,61 @@ type GameCardProps = {
   game: any;
   onClick: () => void;
   onContextMenu: (e: React.MouseEvent) => void;
+  draggable?: boolean;
+  onDragStart?: (e: React.DragEvent) => void;
+  onDragOver?: (e: React.DragEvent) => void;
+  onDragLeave?: (e: React.DragEvent) => void;
+  onDrop?: (e: React.DragEvent) => void;
+  onDragEnd?: (e: React.DragEvent) => void;
+  isDragging?: boolean;
+  isDragOver?: boolean;
 };
 
-const GameCard: React.FC<GameCardProps> = ({ game, onClick, onContextMenu }) => {
+const GameCard: React.FC<GameCardProps> = ({
+  game,
+  onClick,
+  onContextMenu,
+  draggable,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onDragEnd,
+  isDragging,
+  isDragOver,
+}) => {
   const [imgError, setImgError] = useState(!game.cover || game.cover.includes('via.placeholder'));
 
   return (
     <div
-      style={cardStyle}
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
+      style={{
+        ...cardStyle,
+        opacity: isDragging ? 0.4 : 1,
+        borderColor: isDragOver ? 'var(--accent-color)' : 'var(--border-color)',
+        transform: isDragOver ? 'scale(1.02)' : 'none',
+        boxShadow: isDragOver ? '0 0 15px var(--accent-color)' : 'none',
+      }}
       onClick={onClick}
       onContextMenu={onContextMenu}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'scale(1.04) translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.5)';
-        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+        if (!isDragOver) {
+          e.currentTarget.style.transform = 'scale(1.04) translateY(-4px)';
+          e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.5)';
+          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+        }
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'scale(1) translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
-        e.currentTarget.style.borderColor = 'var(--border-color)';
+        if (!isDragOver) {
+          e.currentTarget.style.transform = 'scale(1) translateY(0)';
+          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.borderColor = 'var(--border-color)';
+        }
       }}
     >
       {game.favorite && (
@@ -85,9 +121,12 @@ const starBadgeStyle: React.CSSProperties = {
 };
 
 export const Library: React.FC = () => {
-  const { games, t, refreshGames } = useAppContext();
+  const { games, setGames, sortOrder, setSortOrder, t, refreshGames } = useAppContext();
   const navigate = useNavigate();
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, gameId: string } | null>(null);
+
+  const [draggedGameId, setDraggedGameId] = useState<string | null>(null);
+  const [dragOverGameId, setDragOverGameId] = useState<string | null>(null);
 
   const handleDelete = async (gameId: string) => {
     if (!window.electronAPI) return;
@@ -99,21 +138,116 @@ export const Library: React.FC = () => {
     }
   };
 
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    if (sortOrder !== 'custom') return;
+    setDraggedGameId(id);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    if (sortOrder !== 'custom') return;
+    e.preventDefault();
+    setDragOverGameId(id);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverGameId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedGameId(null);
+    setDragOverGameId(null);
+  };
+
+  const handleDrop = async (e: React.DragEvent, targetId: string) => {
+    if (sortOrder !== 'custom') return;
+    e.preventDefault();
+    if (!draggedGameId || draggedGameId === targetId) return;
+
+    // Verify they are within the same favorite/regular group to avoid visual glitches
+    const draggedGame = games.find(g => g.id === draggedGameId);
+    const targetGame = games.find(g => g.id === targetId);
+    if (!draggedGame || !targetGame) return;
+
+    if (draggedGame.favorite !== targetGame.favorite) {
+      setDragOverGameId(null);
+      setDraggedGameId(null);
+      return;
+    }
+
+    const indexDragged = games.findIndex(g => g.id === draggedGameId);
+    const indexTarget = games.findIndex(g => g.id === targetId);
+    if (indexDragged === -1 || indexTarget === -1) return;
+
+    const newGames = [...games];
+    const [draggedItem] = newGames.splice(indexDragged, 1);
+    newGames.splice(indexTarget, 0, draggedItem);
+
+    setGames(newGames);
+    if (window.electronAPI) {
+      await window.electronAPI.setGamesOrder(newGames.map(g => g.id));
+    }
+
+    setDragOverGameId(null);
+    setDraggedGameId(null);
+  };
+
+  const getSortedGames = () => {
+    if (sortOrder === 'az') {
+      return [...games].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOrder === 'favorites') {
+      const favorites = [...games].filter(g => g.favorite).sort((a, b) => a.name.localeCompare(b.name));
+      const regular = [...games].filter(g => !g.favorite).sort((a, b) => a.name.localeCompare(b.name));
+      return [...favorites, ...regular];
+    } else {
+      // custom sorting
+      // favorites always on top, regular games below, preserving their DB order
+      const favorites = [...games].filter(g => g.favorite);
+      const regular = [...games].filter(g => !g.favorite);
+      return [...favorites, ...regular];
+    }
+  };
+
+  const sortedGames = getSortedGames();
+
   return (
     <div style={containerStyle}>
-      <h1 className="text-hero text-gradient" style={headerStyle}>{t('ALL_GAMES')}</h1>
+      <div style={headerContainerStyle}>
+        <h1 className="text-hero text-gradient" style={headerStyle}>{t('ALL_GAMES')}</h1>
+        
+        <div style={sortContainerStyle}>
+          <span style={sortLabelStyle}>{t('SORT_BY')}:</span>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            style={sortSelectStyle}
+          >
+            <option value="az" style={sortOptionStyle}>{t('SORT_AZ')}</option>
+            <option value="favorites" style={sortOptionStyle}>{t('SORT_FAVORITES')}</option>
+            <option value="custom" style={sortOptionStyle}>{t('SORT_CUSTOM')}</option>
+          </select>
+        </div>
+      </div>
 
-      {games.length === 0 ? (
+      {sortedGames.length === 0 ? (
         <div style={emptyStateStyle}>
           <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🎮</div>
           <div>{t('NO_GAMES')}</div>
         </div>
       ) : (
         <div style={gridStyle}>
-          {games.map(game => (
+          {sortedGames.map(game => (
             <GameCard
               key={game.id}
               game={game}
+              draggable={sortOrder === 'custom'}
+              onDragStart={(e) => handleDragStart(e, game.id)}
+              onDragOver={(e) => handleDragOver(e, game.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, game.id)}
+              onDragEnd={handleDragEnd}
+              isDragging={draggedGameId === game.id}
+              isDragOver={dragOverGameId === game.id}
               onClick={() => navigate(`/game/${game.id}`)}
               onContextMenu={(e) => {
                 e.preventDefault();
@@ -147,10 +281,53 @@ const containerStyle: React.CSSProperties = {
   background: 'var(--bg-primary)',
 };
 
+const headerContainerStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '30px',
+  flexWrap: 'wrap',
+  gap: '15px',
+};
+
 const headerStyle: React.CSSProperties = {
   fontSize: '2.8rem',
   fontWeight: 800,
-  marginBottom: '30px',
+  margin: 0,
+};
+
+const sortContainerStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  background: 'rgba(255, 255, 255, 0.03)',
+  border: '1px solid var(--border-color)',
+  padding: '8px 16px',
+  borderRadius: '12px',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+};
+
+const sortLabelStyle: React.CSSProperties = {
+  fontSize: '0.85rem',
+  color: 'var(--text-secondary)',
+  fontWeight: 600,
+};
+
+const sortSelectStyle: React.CSSProperties = {
+  background: 'transparent',
+  border: 'none',
+  color: 'var(--text-primary)',
+  fontSize: '0.85rem',
+  fontWeight: 700,
+  outline: 'none',
+  cursor: 'pointer',
+  paddingRight: '5px',
+};
+
+const sortOptionStyle: React.CSSProperties = {
+  background: 'var(--bg-secondary)',
+  color: 'var(--text-primary)',
 };
 
 const gridStyle: React.CSSProperties = {

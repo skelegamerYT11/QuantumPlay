@@ -1,6 +1,6 @@
 # 🎮 QuantumPlay
 
-> A premium, modern, and ultra-fast universal game launcher built with Electron, React, and TypeScript. Vibe Coded with 💖 by MrSkele & Antigravity.
+> A premium, modern, and ultra-fast universal game launcher built with Electron, React, and TypeScript. Vibe Coded with 💖 by MrSkele & SharkyJJK & Antigravity.
 
 ---
 
@@ -20,6 +20,9 @@
 </p>
 
 ---
+
+![QuantumPlay Banner](https://i.imgur.com/S6KozkX.png)
+
 
 ## ✨ Features
 
@@ -85,10 +88,11 @@ All packaged files with the official custom logo will be located in the `dist-re
 ## 👥 Contributors & Credits
 
 * **MrSkele** ([@skelegamerYT11](https://github.com/skelegamerYT11)) — Creator, Designer & Lead Developer 👑
+* **Sharky** ([@SharkyJJK](https://github.com/SharkyJJK)) - Creator, Designer & Lead Developer 👑
 * **Antigravity** — AI Pair-Programmer & Software Architect ⚡ (Designed by the Google DeepMind Team)
 
 ---
 
 <p align="center">
-  Vibe Coded with 💖 by MrSkele & Antigravity
+  Vibe Coded with 💖 by MrSkele & SharkyJJK & Antigravity
 </p>

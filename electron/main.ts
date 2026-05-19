@@ -190,6 +190,12 @@ ipcMain.handle('update-game', async (_, id, updates) => {
   return true
 })
 
+ipcMain.handle('set-games-order', async (_, orderedIds) => {
+  db.setGamesOrder(orderedIds)
+  win?.webContents.send('game-updated')
+  return true
+})
+
 ipcMain.handle('get-settings', async () => {
   return db.getSettings()
 })

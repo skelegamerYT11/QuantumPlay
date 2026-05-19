@@ -20,6 +20,7 @@ export type AppSettings = {
   customAccent?: string;
   loginItem?: boolean;
   minimizeToTray?: boolean;
+  sortOrder?: string;
 };
 
 export class Database {
@@ -73,6 +74,23 @@ export class Database {
 
   public getGames(): Game[] {
     return this.data.games;
+  }
+
+  public setGamesOrder(orderedIds: string[]) {
+    const gameMap = new Map(this.data.games.map(g => [g.id, g]));
+    const orderedGames: Game[] = [];
+    for (const id of orderedIds) {
+      const game = gameMap.get(id);
+      if (game) {
+        orderedGames.push(game);
+        gameMap.delete(id);
+      }
+    }
+    for (const game of gameMap.values()) {
+      orderedGames.push(game);
+    }
+    this.data.games = orderedGames;
+    this.save();
   }
 
   public addGame(game: Game) {
