@@ -335,6 +335,32 @@ ipcMain.handle('play-game', async (_, id: string) => {
       detached: true,
       stdio: 'ignore',
     })
+
+    child.on('error', (err: any) => {
+      console.error('QuantumPlay: Direct spawn failed. Attempting PowerShell UAC fallback.', err)
+      
+      // Clean up the direct tracking immediately
+      delete activeProcesses[id]
+      win?.webContents.send('game-updated')
+
+      // Fallback: spawn using PowerShell Start-Process which triggers UAC prompt if admin privileges are required
+      try {
+        const workingDir = game.folderPath || path.dirname(game.exePath)
+        const ps = spawn('powershell.exe', [
+          '-NoProfile',
+          '-NonInteractive',
+          '-Command',
+          `Start-Process -FilePath "${game.exePath}" -WorkingDirectory "${workingDir}"`
+        ], {
+          detached: true,
+          stdio: 'ignore'
+        })
+        ps.unref()
+      } catch (fallbackErr) {
+        console.error('QuantumPlay: PowerShell elevation fallback failed:', fallbackErr)
+      }
+    })
+
     child.unref()
 
     activeProcesses[id] = { startTime: Date.now(), child }
